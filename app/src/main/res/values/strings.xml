@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">polygons</string>
     <string name="title_activity_maps">Map</string>
+    <string name="map_btn_label">Map</string>
+    <string name="sat_btn_label">Satellite</string>
+    <string name="home_btn_label">Go Home</string>
+    <string name="map_input_hint">Name of your mark</string>
 </resources>
