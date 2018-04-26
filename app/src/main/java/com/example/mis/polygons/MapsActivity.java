@@ -2,6 +2,7 @@ package com.example.mis.polygons;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.Icon;
@@ -36,14 +37,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     boolean mapReady = false;
+    boolean polygonStarted = false;
     private static final int finePermissionLocation = 101;
     private EditText markerText;
     static MarkerOptions sampleMarker;
-    static LatLng poly1 = new LatLng(50.981019, 11.332072);
-    static LatLng poly2 = new LatLng(50.980920, 11.332685);
-    static LatLng poly3 = new LatLng(50.980329, 11.332425);
-    static LatLng poly4 = new LatLng(50.980418, 11.331831);
-
+    private SharedPreferences preferences;
     static final CameraPosition homeView = CameraPosition.builder()
             .target(new LatLng(29.184083, -101.348890))
             .zoom(3)
@@ -58,50 +56,60 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-        sampleMarker = new MarkerOptions()
-                .position(new LatLng(50.974505, 11.329045))
-                .title("Bauhaus-Universitaet Weimar")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pinmarker));
-
-
-        Button mapViewBtn = findViewById(R.id.map_button);
-        mapViewBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (mapReady)
-                    mMap.setMapType((GoogleMap.MAP_TYPE_NORMAL));
-            }
-        });
-
-        Button satViewBtn = findViewById(R.id.sat_button);
-        satViewBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (mapReady)
-                    mMap.setMapType((GoogleMap.MAP_TYPE_SATELLITE));
-            }
-        });
-
-        Button homeViewBtn = findViewById(R.id.home_button);
-        homeViewBtn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (mapReady)
-                    goTo(homeView);
-            }
-        });
-
-        mapFragment.getMapAsync(this);
-
         markerText = findViewById(R.id.markerInputText);
-
     }
 
-    private void goTo(CameraPosition location) {
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(location), 2000, null);
+    private void savedPreferences(LatLng latLang, String markText){
+        if(!polygonStarted){
+            preferences =  MapsActivity.this.getPreferences(Context.MODE_PRIVATE);
+            String savedString = preferences.getString("markers", "" );
+            SharedPreferences.Editor editor = preferences.edit();
+            String makersInfo = markText + "/" + String.valueOf(latLang.latitude) + "/" + String.valueOf(latLang.longitude) + "&" + savedString;
+            editor.putString("markers", makersInfo);
+            editor.commit();
+            Toast.makeText(getApplicationContext(), "Marker Saved", Toast.LENGTH_LONG).show();
+        }
     }
 
-    /** https://developers.google.com/android/reference/com/google/android/gms/maps/model/CameraPosition
-     * https://developers.google.com/maps/documentation/android-api/views?hl=es-419
-     * https://developer.android.com/reference/android/widget/Button.html **/
+    private void loadPreferences(){
+        preferences =  MapsActivity.this.getPreferences(Context.MODE_PRIVATE);
+        String defaultMarkers = preferences.getString("markers", "No markers available" );
+
+        if(!defaultMarkers.equals("No markers available")) {
+            String textM;
+            Double latM;
+            Double langM;
+            LatLng latLngM;
+            String[] markersArray = defaultMarkers.split("&");
+            String[] singleMarker;
+
+            for (int i = 0; i < markersArray.length; i++) {
+                singleMarker = markersArray[i].split("/");
+                textM = singleMarker[0];
+                latM = Double.parseDouble(singleMarker[1]);
+                langM = Double.parseDouble(singleMarker[2]);
+                latLngM = new LatLng(latM, langM);
+
+                mMap.addMarker(new MarkerOptions()
+                        .position(latLngM)
+                        .title(textM)
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pinmarker)));
+            }
+            Toast.makeText(getApplicationContext(), "Markers loaded", Toast.LENGTH_LONG).show();
+        } else {Toast.makeText(getApplicationContext(), defaultMarkers, Toast.LENGTH_LONG).show();}
+    }
+
+    private void clearPreferences() {
+        preferences =  MapsActivity.this.getPreferences(Context.MODE_PRIVATE);
+        preferences.edit().clear().commit();
+    }
+
+    /** References:
+     *  https://developers.google.com/android/reference/com/google/android/gms/maps/model/CameraPosition
+     *  https://developers.google.com/maps/documentation/android-api/views?hl=es-419
+     *  https://developer.android.com/reference/android/widget/Button.html
+     *  https://developer.android.com/training/basics/data-storage/shared-preferences.html?hl=es-419
+     *  https://developer.android.com/reference/android/content/SharedPreferences.html?hl=es-419#getString(java.lang.String,%20java.lang.String)**/
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -114,28 +122,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, finePermissionLocation);
             }
         }
-        mMap.addMarker(sampleMarker);
-
+        //mMap.addMarker(sampleMarker);
+        loadPreferences();
         LatLng weimar = new LatLng(50.980089, 11.326042);
         CameraPosition cameraView = new CameraPosition.Builder().target(weimar).zoom(17).tilt(65).build();
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraView));
 
-        /**mMap.addPolyline(new PolylineOptions().geodesic(true)
-            .add(poly1).add(poly2).add(poly3).add(poly4).add(poly1));**/
-
-        mMap.addPolygon(new PolygonOptions()
-                .add(poly1, poly2, poly3, poly4, poly1)
-                .strokeColor(Color.RED)
-                .fillColor(Color.BLUE));
-
         mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
             @Override
             public void onMapLongClick(LatLng latLng) {
+                String inputText = markerText.getText().toString();
+                if(inputText.equals("") || inputText.equals(" ")){inputText = "Just another Marker";}
                 mMap.addMarker(new MarkerOptions()
                         .position(latLng)
-                        .title(markerText.getText().toString())
+                        .title(inputText)
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_pinmarker)));
                 markerText.setText("");
+                savedPreferences(latLng, inputText);
             }
         });
     }

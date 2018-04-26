@@ -18,7 +18,6 @@
          android:id="@+id/markerInputText"
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
-         android:cursorVisible="false"
          android:hint="@string/map_input_hint"
          android:paddingTop="8dp"
          android:paddingBottom="8dp"
@@ -38,29 +37,8 @@
          android:layout_gravity="bottom"
          android:layout_marginRight="20dp"
          android:layout_marginLeft="20dp"
-         android:layout_marginBottom="40dp">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/map_btn_label"
-            android:id="@+id/map_button"
-            android:height="30dp"
-            android:layout_weight="1"/>
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/sat_btn_label"
-            android:id="@+id/sat_button"
-            android:height="30dp"
-            android:layout_weight="1"/>
-
-         <Button
-             android:id="@+id/home_button"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:height="30dp"
-             android:text="@string/home_btn_label"
-             android:layout_weight="1" />
+         android:layout_marginBottom="50dp">
+         //Add buttons here
      </LinearLayout>
 
  </FrameLayout>
