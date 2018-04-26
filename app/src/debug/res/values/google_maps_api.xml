@@ -1,3 +1,4 @@
 <resources>
-    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false">AIzaSyCpSoNjDhEyRGekRRPIaGU8sXSXzm-5eh8</string>
+    <string name="google_maps_key" templateMergeStrategy="preserve" translatable="false"></string>
 </resources>
+    <!--Insert your personal API Key from: https://console.developers.google.com-->

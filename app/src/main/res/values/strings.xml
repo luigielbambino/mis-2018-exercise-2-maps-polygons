@@ -4,5 +4,5 @@
     <string name="clear_btn">Clear map</string>
     <string name="start_polygon_btn_label">Start Polygon</string>
     <string name="end_polygon_btn_label">End Polygon</string>
-    <string name="map_input_hint">Name of your mark</string>
+    <string name="map_input_hint">Name of your marker</string>
 </resources>

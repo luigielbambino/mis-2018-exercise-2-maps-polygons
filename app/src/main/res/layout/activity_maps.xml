@@ -27,18 +27,26 @@
          android:height="40dp"
          android:background="#ffffff"
          android:layout_gravity="top"
-         android:layout_marginTop="70dp"
-         android:layout_marginLeft="20dp"
-         android:layout_marginRight="20dp"/>
+         android:layout_marginTop="10dp"
+         android:layout_marginStart="12dp"
+         android:layout_marginEnd="65dp"/>
 
      <LinearLayout
          android:layout_width="match_parent"
          android:layout_height="wrap_content"
          android:layout_gravity="bottom"
-         android:layout_marginRight="20dp"
-         android:layout_marginLeft="20dp"
-         android:layout_marginBottom="50dp">
-
+         android:layout_marginRight="10dp"
+         android:layout_marginLeft="10dp"
+         android:layout_marginBottom="70dp">
+         <Button
+             android:id="@+id/clear_button"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:height="30dp"
+             android:text="@string/clear_btn"
+             android:layout_weight="1"
+             android:layout_marginEnd="10dp"
+             android:background="#F5F5F5"/>
          <Button
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
@@ -46,7 +54,9 @@
              android:id="@+id/start_polygon_button"
              android:height="30dp"
              android:layout_weight="1"
-             android:onClick="startPolygonButtonOnClick"/>
+             android:onClick="startPolygonButtonOnClick"
+             android:layout_marginStart="10dp"
+             android:background="@color/colorAccent"/>
          <Button
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
@@ -55,15 +65,10 @@
              android:height="30dp"
              android:layout_weight="1"
              android:onClick="endPolygonButtonOnClick"
-             android:visibility="gone"/>
-
-         <Button
-             android:id="@+id/clear_button"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:height="30dp"
-             android:text="@string/clear_btn"
-             android:layout_weight="1" />
+             android:visibility="gone"
+             android:layout_marginStart="10dp"
+             android:background="#F44336"
+             android:textColor="#ffffff"/>
      </LinearLayout>
 
  </FrameLayout>
