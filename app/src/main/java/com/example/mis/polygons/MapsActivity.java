@@ -57,6 +57,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         markerText = findViewById(R.id.markerInputText);
+
+        Button clearMapBtn = findViewById(R.id.clear_button);
+        clearMapBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mapReady)
+                    mMap.clear();
+                    clearPreferences();
+            }
+        });
     }
 
     private void savedPreferences(LatLng latLang, String markText){
@@ -122,7 +132,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, finePermissionLocation);
             }
         }
-        //mMap.addMarker(sampleMarker);
         loadPreferences();
         LatLng weimar = new LatLng(50.980089, 11.326042);
         CameraPosition cameraView = new CameraPosition.Builder().target(weimar).zoom(17).tilt(65).build();

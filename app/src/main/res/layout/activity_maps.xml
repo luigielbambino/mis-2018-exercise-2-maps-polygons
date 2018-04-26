@@ -38,7 +38,13 @@
          android:layout_marginRight="20dp"
          android:layout_marginLeft="20dp"
          android:layout_marginBottom="50dp">
-         //Add buttons here
+         <Button
+             android:id="@+id/clear_button"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:height="30dp"
+             android:text="@string/clear_btn"
+             android:layout_weight="1" />
      </LinearLayout>
 
  </FrameLayout>
