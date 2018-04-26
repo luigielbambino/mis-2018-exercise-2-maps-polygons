@@ -38,6 +38,25 @@
          android:layout_marginRight="20dp"
          android:layout_marginLeft="20dp"
          android:layout_marginBottom="50dp">
+
+         <Button
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/start_polygon_btn_label"
+             android:id="@+id/start_polygon_button"
+             android:height="30dp"
+             android:layout_weight="1"
+             android:onClick="startPolygonButtonOnClick"/>
+         <Button
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:text="@string/end_polygon_btn_label"
+             android:id="@+id/end_polygon_button"
+             android:height="30dp"
+             android:layout_weight="1"
+             android:onClick="endPolygonButtonOnClick"
+             android:visibility="gone"/>
+
          <Button
              android:id="@+id/clear_button"
              android:layout_width="wrap_content"
